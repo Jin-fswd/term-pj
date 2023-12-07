@@ -9,21 +9,8 @@ const allRoutes = {
   "/:get": (request, response) => {
     controller.getHomepage(request, response);
   },
-  //====================================================================================================
-  "/src/photos/john123/profile.jpeg:get": (request, response) => {
-    createReadStream(path.join(__dirname, "photos", "john123", "profile.jpeg")).pipe(response)
-  },
-  "/src/photos/sandra123/profile.jpeg:get": (request, response) => {
-    createReadStream(path.join(__dirname, "photos", "sandra123", "profile.jpeg")).pipe(response)
-  },
-  "/goToFeed:get" : (request, response) => {
-    console.log(request, response)
-    controller.writeHead(request, response);
-  },
-  //====================================================================================================
-  // 
   // POST: localhost:3000/form
-  "/form:post": (request, response) => {
+  "/form:get": (request, response) => {
     controller.sendFormData(request, response);
   },
   // POST: localhost:3000/images
@@ -35,11 +22,9 @@ const allRoutes = {
   "/feed:get": (request, response) => {
     controller.getFeed(request, response);
   },
-  // "/profilejpeg:get" async (request, response) => {
-  //   const pathFile = path.join(__dirname, "src","photos", "john123", "profile.jpeg")
-  //   async 
-  // }
-
+  "/images:post": (request, response) => {
+    controller.uploadImages(request, response);
+  },
   // 404 routes
   default: (request, response) => {
     response.writeHead(404, DEFAULT_HEADER);
@@ -48,20 +33,19 @@ const allRoutes = {
     );
   },
 };
-
 function handler(request, response) {
   const { url, method } = request;
-
-  const { pathname } = parse(url, true); // /feed
-
-  // put if statement to check if pathname includes jpeg or jpg or png
-  // sendImage(request, response)
-  const key = `${pathname}:${method.toLowerCase()}`;
-  const chosen = allRoutes[key] || allRoutes.default;
-
-  return Promise.resolve(chosen(request, response)).catch(
-    handlerError(response)
-  );
+  const { pathname } = parse(url, true);
+  if (url.includes("photos")) {
+    createReadStream(path.join(__dirname, url)).pipe(response);
+  } else {    
+      const key = `${pathname}:${method.toLowerCase()}`;
+      const chosen = allRoutes[key] || allRoutes.default;
+    
+      return Promise.resolve(chosen(request, response)).catch(
+        handlerError(response)
+      );
+  }
 }
 
 function handlerError(response) {

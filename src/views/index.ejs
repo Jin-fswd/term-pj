@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+        <style>
+            body {
+                font-family: 'Open Sans', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f2f2f2;
+            }
+    
+            .user-container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            h1 {
+                color: #333;
+            }
+    
+            img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 50%;
+                margin-bottom: 10px;
+            }
+    
+            button {
+                padding: 10px;
+                margin-right: 10px;
+                cursor: pointer;
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+            }
+        </style>
+        <title>hyungjin ahn</title>
+    </head>
+</head>
+<body>
+    <% contents.forEach(function(item) { %>
+        <div>
+        <h1><%= item.username%></h1>
+        <img src="/photos/<%= item.username%>/profile.jpeg"  width="150" height="150">
+ 
+        <button id="upload" onclick="openPopup('/form?user=<%= item.username %>')">Upload</button>
+
+        <button id="goToFeed" onclick="location.href='/feed?user=<%= item.username %>'"><%= item.username %></button>
+        </div>
+    <% }); %>
+    
+    <script>
+        function openPopup(url) {
+            const popup = window.open(url, "uploadimage", "width=500,height=500");
+            if (popup) {
+                popup.focus();
+            }
+        }
+    </script>
+
+</body>
